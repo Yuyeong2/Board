@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/hi")
-public class HiServlet extends HttpServlet {
+public class HiServlet extends HttpServlet { //서블릿 쓰는 이유 - 요청받고 응답하기 위해서
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String name = req.getParameter("name");
@@ -24,7 +25,15 @@ public class HiServlet extends HttpServlet {
         vo.setName("doheum");
         vo.setAge(10);
 
-        String result = String.format("{ \"name\": \"%s\", \"age\": %s }", vo.getName(), vo.getAge());
+        String result = String.format("{ \"name\":\"%s\",\"age\": %s }", vo.getName(), vo.getAge());
+        System.out.println("result: " + result);
+
+        Gson gson = new Gson();
+        String result2 = gson.toJson(vo);
+
+        TestVO vo2 = gson.fromJson(result2, TestVO.class);
+
+        System.out.println("result2: " + result2);
         out.print(result);
     }
 
