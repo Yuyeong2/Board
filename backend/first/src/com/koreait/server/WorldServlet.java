@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/*1. /world?addr=hahaha&phone=01030249887&gender=w*/
+/* 1. /world?addr=hahaha&phone=01030249887&gender=w */
 
 @WebServlet("/world")   //url 쿼리스트링 -> get방식
 public class WorldServlet extends HttpServlet {
@@ -23,7 +23,6 @@ public class WorldServlet extends HttpServlet {
         System.out.println("addr : " + addr);
         System.out.println("phone : " + phone);
         System.out.println("gender : " + gender);
-
 
     }
     @Override

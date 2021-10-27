@@ -11,6 +11,7 @@
           <element id="library" level="project" name="javax.servlet.api" />
           <element id="library" level="project" name="lib" />
           <element id="library" level="project" name="gson-2.8.5" />
+          <element id="library" level="project" name="mysql-connector-java-8.0.27" />
         </element>
       </element>
     </root>
