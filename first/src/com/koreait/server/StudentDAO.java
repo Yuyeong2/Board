@@ -22,7 +22,6 @@ public class StudentDAO {
 
     //INSERT 담당 메소드
     public static int insStudent(StudentVO vo) {
-        int result = 0;
         Connection con = null;
         PreparedStatement ps = null;
         String sql = "INSERT INTO t_student2" +
@@ -35,7 +34,7 @@ public class StudentDAO {
             ps.setString(1, vo.getNm());
             ps.setInt(2, vo.getAge());
             ps.setString(3, vo.getAddr());
-            result = ps.executeUpdate();
+            return ps.executeUpdate(); //영향을 미친 행 수
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -80,7 +79,6 @@ public class StudentDAO {
             ps = con.prepareStatement(sql);
             ps.setInt(1, vo.getSno());
             rs = ps.executeQuery();
-
             if(rs.next()) {
                 result = new StudentVO();
                 result.setSno(rs.getInt("sno"));
@@ -113,7 +111,6 @@ public class StudentDAO {
             ps.setString(3, vo.getAddr());
             ps.setInt(4, vo.getSno());
             return ps.executeUpdate();
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
