@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/selList")
+@WebServlet("/list")
 public class SelBoardListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -24,5 +24,8 @@ public class SelBoardListServlet extends HttpServlet {
         PrintWriter out = res.getWriter();
         out.print(json);
     }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
+    }
 }
