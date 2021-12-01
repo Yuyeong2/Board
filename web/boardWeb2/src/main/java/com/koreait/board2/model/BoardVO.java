@@ -1,11 +1,22 @@
-package com.koreait.server;
+package com.koreait.board2.model;
 
 public class BoardVO {
     private int iboard;
     private String title;
     private String ctnt;
-    private String writer;
+    private int writer;
     private String rdt;
+    private String mdt;
+
+    private String writerNm;
+
+    public String getWriterNm() {
+        return writerNm;
+    }
+
+    public void setWriterNm(String writerNm) {
+        this.writerNm = writerNm;
+    }
 
     public int getIboard() {
         return iboard;
@@ -31,11 +42,11 @@ public class BoardVO {
         this.ctnt = ctnt;
     }
 
-    public String getWriter() {
+    public int getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(int writer) {
         this.writer = writer;
     }
 
@@ -45,5 +56,13 @@ public class BoardVO {
 
     public void setRdt(String rdt) {
         this.rdt = rdt;
+    }
+
+    public String getMdt() {
+        return mdt;
+    }
+
+    public void setMdt(String mdt) {
+        this.mdt = mdt;
     }
 }

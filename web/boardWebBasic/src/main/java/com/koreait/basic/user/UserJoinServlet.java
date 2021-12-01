@@ -1,4 +1,4 @@
-package com.koreait.server;
+package com.koreait.basic.user;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,18 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/del")
-public class DelBoardServlet extends HttpServlet {
+@WebServlet("/user/join")
+public class UserJoinServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        String pIboard = req.getParameter("iboard");
-        System.out.println("pIboard : " + pIboard);
-
-        int iboard = Integer.parseInt(pIboard);
-
-        BoardVO param = new BoardVO();
-        param.setIboard(iboard);
-        BoardDAO.delBoard(param);
+        req.setAttribute("title", "회원가입");
+        req.setAttribute("page", "user/join");
+        String jsp = "/WEB-INF/view/layout.jsp";
+        req.getRequestDispatcher(jsp).forward(req, res);
     }
 
     @Override

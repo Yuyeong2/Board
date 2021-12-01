@@ -1,4 +1,4 @@
-package com.koreait.server;
+package com.koreait.board;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,22 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/del")
-public class DelBoardServlet extends HttpServlet {
+@WebServlet("/detail")
+public class BoardDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        String pIboard = req.getParameter("iboard");
-        System.out.println("pIboard : " + pIboard);
-
-        int iboard = Integer.parseInt(pIboard);
+        String strIboard = req.getParameter("iboard");
+        int iboard = Integer.parseInt(strIboard);
 
         BoardVO param = new BoardVO();
         param.setIboard(iboard);
-        BoardDAO.delBoard(param);
-    }
+        BoardVO data = BoardDAO.selBoardDetail(param);
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        req.setAttribute("bbb", data);
 
+        String path = "/WEB-INF/jsp/detail.jsp";
+        req.getRequestDispatcher(path).forward(req, res);
     }
 }

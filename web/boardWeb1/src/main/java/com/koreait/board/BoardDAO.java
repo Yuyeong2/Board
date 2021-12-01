@@ -1,19 +1,17 @@
-package com.koreait.server;
+package com.koreait.board;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
+
 
 public class BoardDAO {
     public static int insBoard(BoardVO param) {
         Connection con = null;
         PreparedStatement ps = null;
-        String sql = " INSERT INTO t_board (title, ctnt, writer) " +
-                " VALUES(?, ?, ?)";
+        String sql = " INSERT INTO t_board " +
+                " (title, ctnt, writer) " +
+                " VALUES " +
+                " (?, ?, ?) ";
         try {
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
@@ -21,7 +19,7 @@ public class BoardDAO {
             ps.setString(2, param.getCtnt());
             ps.setString(3, param.getWriter());
             return ps.executeUpdate();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             DbUtils.close(con, ps);
@@ -31,17 +29,14 @@ public class BoardDAO {
 
     public static List<BoardVO> selBoardList() {
         List<BoardVO> list = new ArrayList();
-
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT iboard, title, writer, rdt " +
-                " FROM t_board ";
+        String sql = "SELECT iboard, title, writer, rdt FROM t_board ORDER BY iboard DESC";
         try {
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-
             while(rs.next()) {
                 BoardVO vo = new BoardVO();
                 vo.setIboard(rs.getInt("iboard"));
@@ -58,43 +53,59 @@ public class BoardDAO {
         return list;
     }
 
-    public static BoardVO selBoardOne(BoardVO param) {
-        BoardVO vo = null;
+    public static BoardVO selBoardDetail(BoardVO param) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM t_board WHERE iboard = ?";
+        String sql = " SELECT title, ctnt, writer, rdt " +
+                " FROM t_board WHERE iboard = ? ";
         try {
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, param.getIboard());
             rs = ps.executeQuery();
-
             if(rs.next()) {
-                vo = new BoardVO();
-                vo.setIboard(rs.getInt("iboard"));
+                BoardVO vo = new BoardVO();
+                vo.setIboard(param.getIboard());
                 vo.setTitle(rs.getString("title"));
                 vo.setCtnt(rs.getString("ctnt"));
                 vo.setWriter(rs.getString("writer"));
                 vo.setRdt(rs.getString("rdt"));
+                return vo;
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             DbUtils.close(con, ps, rs);
         }
-
-        return vo;
+        return null;
     }
 
+    public static int delBoard(int iboard) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        String sql = "DELETE FROM t_board WHERE iboard = ?";
+        try {
+            con = DbUtils.getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, iboard);
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.close(con, ps);
+        }
+        return 0;
+    }
     public static int updBoard(BoardVO param) {
         Connection con = null;
         PreparedStatement ps = null;
-        String sql = " UPDATE t_board " +
-                " SET title = ? " +
-                " , ctnt = ? " +
-                " , writer = ? " +
-                " WHERE iboard = ? ";
+        String sql =  "UPDATE t_board SET " +
+                " title = ? ," +
+                " ctnt = ? ," +
+                " writer = ? " +
+                " WHERE iboard = ?";
+
         try {
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
@@ -103,26 +114,10 @@ public class BoardDAO {
             ps.setString(3, param.getWriter());
             ps.setInt(4, param.getIboard());
             return ps.executeUpdate();
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            DbUtils.close(con, ps);
-        }
-        return 0;
-    }
 
-    public static int delBoard(BoardVO param) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        String sql = " DELETE FROM t_board WHERE iboard = ? ";
-        try {
-            con = DbUtils.getCon();
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, param.getIboard());
-            return ps.executeUpdate();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }finally {
             DbUtils.close(con, ps);
         }
         return 0;
