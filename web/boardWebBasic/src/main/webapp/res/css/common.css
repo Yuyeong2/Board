@@ -1,0 +1,16 @@
+* { padding: 0; margin: 0; box-sizing: border-box; }
+a {text-decoration: none; color: #000; }
+table, td, th {border: 1px solid #262626; border-collapse: collapse; }
+td, th { padding: 5px}
+ul {list-style: none;}
+#welcome {flex-grow: 1; text-align: right;}
+
+.container {display: grid; grid-template-rows: 100px 1fr 80px; min-height: 100vh;}
+.header {background-color: #fab4b4}
+.topMenu {display: flex; }
+.topMenu li a {color: darkblue;}
+.topMenu li:not(:first-child) {margin-left: 15px; }
+
+.body { padding: 20px}
+
+.footer{background-color: #4b4b4b; color: #fff;}

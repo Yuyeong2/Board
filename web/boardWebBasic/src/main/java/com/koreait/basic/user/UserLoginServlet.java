@@ -2,46 +2,52 @@ package com.koreait.basic.user;
 
 import com.koreait.basic.Utils;
 import com.koreait.basic.dao.UserDAO;
+import com.koreait.basic.user.model.LoginResult;
 import com.koreait.basic.user.model.UserEntity;
-import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/user/join")
-public class UserJoinServlet extends HttpServlet {
+@WebServlet("/user/login")
+public class UserLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        Utils.displayView("회원가입", "user/join", req, res);
+        Utils.displayView("로그인", "user/login", req, res);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String uid = req.getParameter("uid");
         String upw = req.getParameter("upw");
-        String nm = req.getParameter("nm");
-        int gender = Utils.getParameterInt(req, "gender");
-        String hashPw =BCrypt.hashpw(upw, BCrypt.gensalt());
-
         UserEntity entity = new UserEntity();
         entity.setUid(uid);
-        entity.setUpw(hashPw);
-        entity.setNm(nm);
-        entity.setGender(gender);
+        entity.setUpw(upw);
 
-        int result =UserDAO.join(entity);
-        switch (result) {
+        LoginResult lr = UserDAO.login(entity);
+                String err = null;
+        switch (lr.getResult()) {
             case 1:
-                res.sendRedirect("/user/login");
+                HttpSession session = req.getSession();
+                session.setAttribute("loginUser", lr.getLoginUser());
+                res.sendRedirect("/board/list");
+                return;
+            case 0:
+                err = "로그인에 실패하였습니다.";
                 break;
-            default:
-                req.setAttribute("err", "회원가입에 실패하였습니다.");
-                doGet(req, res);
+            case 2:
+                err = "아이디를 확인해 주세요.";
+                break;
+            case 3:
+                err = "비밀번호를 확인해 주세요.";
                 break;
         }
+        req.setAttribute("err", err);
+        doGet(req, res);
     }
 }
+
